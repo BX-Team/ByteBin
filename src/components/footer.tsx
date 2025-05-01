@@ -4,12 +4,12 @@ import { Paste } from '@/types/paste';
 import { formatBytes, formatNumber } from '@/common/utils/string.util';
 import { getRelativeTime } from '@/common/utils/date.util';
 import Tooltip from './tooltip';
-import { Expiry } from '@/components/expiry';
 import { Button } from '@/components/button';
 import { PasteCreatedTime } from '@/components/paste/created-time';
 import { DownloadPasteButton } from '@/components/paste/download-button';
 import { PasteLanguageIcon } from '@/components/paste/language-icon';
 import { PasteEditDetails } from '@/types/paste-edit-details';
+import { LanguageSelect } from '@/components/language-select';
 
 type PasteDetails = {
   type: 'paste' | 'edit';
@@ -94,9 +94,11 @@ function PasteDetails({ paste, editDetails }: { paste?: Paste; editDetails?: Pas
 type FooterProps = {
   paste?: Paste;
   editDetails?: PasteEditDetails;
+  selectedLanguage?: string;
+  onLanguageChange?: (language: string) => void;
 };
 
-export function Footer({ paste, editDetails }: FooterProps) {
+export function Footer({ paste, editDetails, selectedLanguage, onLanguageChange }: FooterProps) {
   return (
     <div
       className={
@@ -105,7 +107,9 @@ export function Footer({ paste, editDetails }: FooterProps) {
     >
       <div className='flex gap-2 items-center w-full justify-center md:justify-between'>
         <div className='flex gap-2 items-center'>
-          {!paste && <Expiry />}
+          {!paste && onLanguageChange && (
+            <LanguageSelect value={selectedLanguage || 'plain'} onChange={onLanguageChange} />
+          )}
           <div className='hidden md:block'>
             {paste || editDetails ? <PasteDetails paste={paste} editDetails={editDetails} /> : null}
           </div>

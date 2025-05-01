@@ -1,7 +1,7 @@
 'use client';
 
 import { redirect, useSearchParams } from 'next/navigation';
-import { FormEvent, Suspense, useEffect, useState } from 'react';
+import { FormEvent, SetStateAction, Suspense, useEffect, useState } from 'react';
 import { usePasteExpiry } from '@/providers/paste-expiry-provider';
 import { toast } from '@/hooks/use-toast';
 import { getPaste, uploadPaste } from '@/common/api';
@@ -9,6 +9,7 @@ import { Config } from '@/common/config';
 import { Footer } from '@/components/footer';
 import { MonacoEditor } from '@/components/monaco-editor';
 import { ThemeProvider } from '@/providers/theme-provider';
+import { Paste } from '@/types/paste';
 
 export default function PasteCreatePage() {
   return (
@@ -26,14 +27,16 @@ function Page() {
 
   const duplicate = searchParams.get('duplicate');
   const [content, setContent] = useState<string>('');
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('plain');
 
   useEffect(() => {
     if (duplicate && content == '') {
-      getPaste(duplicate).then(paste => {
+      getPaste(duplicate).then((paste: Paste) => {
         const newPage = '/';
         const newState = { page: newPage };
         window.history.replaceState(newState, '', newPage);
         setContent(paste.content);
+        setSelectedLanguage(paste.language);
       });
     }
   }, [content, duplicate]);
@@ -54,7 +57,7 @@ function Page() {
       return;
     }
 
-    const { paste, error } = await uploadPaste(content, expiry);
+    const { paste, error } = await uploadPaste(content, expiry, selectedLanguage);
     if (error !== null || paste == null) {
       toast({
         title: 'Error',
@@ -79,7 +82,7 @@ function Page() {
       }}
       className='flex flex-col h-full flex-grow gap-1 w-full'
     >
-      <MonacoEditor content={content} onChange={setContent} />
+      <MonacoEditor content={content} onChange={setContent} language={selectedLanguage} />
 
       <Footer
         editDetails={{
@@ -88,6 +91,8 @@ function Page() {
           words: content.length == 0 ? 0 : content.split(' ').length,
           characters: content.length == 0 ? 0 : content.split('').length,
         }}
+        selectedLanguage={selectedLanguage}
+        onLanguageChange={setSelectedLanguage}
       />
     </form>
   );

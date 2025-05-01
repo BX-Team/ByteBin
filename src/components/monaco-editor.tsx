@@ -1,11 +1,12 @@
 'use client';
 
-import { Editor, BeforeMount } from '@monaco-editor/react';
-import { editor } from 'monaco-editor';
+import { Editor, BeforeMount, Monaco } from '@monaco-editor/react';
 import { useTheme } from '@/providers/theme-provider';
 import themes from '@/common/themes';
 import { usePasteExpiry } from '@/providers/paste-expiry-provider';
 import { useRef } from 'react';
+import { logLanguage } from '@/common/utils/languages/log';
+import { diffLanguage } from '@/common/utils/languages/diff';
 
 interface MonacoEditorProps {
   content: string;
@@ -26,9 +27,9 @@ export function MonacoEditor({
 }: MonacoEditorProps) {
   const { theme } = useTheme();
   const { expiry } = usePasteExpiry();
-  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+  const editorRef = useRef<any>(null);
 
-  const handleEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
+  const handleEditorDidMount = (editor: any) => {
     editorRef.current = editor;
 
     editor.addAction({
@@ -36,7 +37,7 @@ export function MonacoEditor({
       label: 'Search with Google',
       contextMenuGroupId: '9_cutcopypaste',
       contextMenuOrder: 5,
-      run: editor => {
+      run: (editor: any) => {
         const selection = editor.getSelection();
         if (selection && !selection.isEmpty()) {
           const model = editor.getModel();
@@ -49,8 +50,13 @@ export function MonacoEditor({
     });
   };
 
-  const beforeMount: BeforeMount = monaco => {
-    // Register themes
+  const beforeMount: BeforeMount = (monaco: Monaco) => {
+    monaco.languages.register({ id: 'log' });
+    monaco.languages.register({ id: 'diff' });
+
+    monaco.languages.setMonarchTokensProvider('log', logLanguage);
+    monaco.languages.setMonarchTokensProvider('diff', diffLanguage);
+
     Object.entries(themes).forEach(([id, theme]) => {
       monaco.editor.defineTheme(id, theme.editor);
     });

@@ -11,16 +11,19 @@ import { ErrorResponse } from '@/common/types/error/error-response';
  *
  * @param content the content of the paste.
  * @param expires the expiration time in seconds.
+ * @param language the programming language of the paste.
  * @returns the response from the server or the error.
  */
 export async function uploadPaste(
   content: string,
   expires?: number,
+  language: string = 'plaintext',
 ): Promise<{ paste: Paste | null; error: ErrorResponse | null }> {
   const response = await ky.post<Paste | ErrorResponse>('/api/upload', {
     body: content,
     searchParams: {
       ...(expires && expires > 0 ? { expires: expires } : {}),
+      language: language,
     },
     throwHttpErrors: false,
   });
