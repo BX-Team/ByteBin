@@ -11,7 +11,7 @@ export default async function DashboardLayout({
 }: {
   children: ReactNode;
 }) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const supabase = createServerComponentClient({ cookies: () => cookieStore });
   const {
     data: { session },
