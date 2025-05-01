@@ -1,6 +1,6 @@
 'use client';
 
-import { authClient } from '@/common/auth-client';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,32 +9,37 @@ import { toast } from '@/hooks/use-toast';
 
 export function Signup() {
   const { replace, refresh } = useRouter();
+  const supabase = createClientComponentClient();
 
   const [error, setError] = useState<string | null>(null);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignIn = async () => {
+  const handleSignUp = async () => {
     setError(null);
-    const { error } = await authClient.signUp.email({
-      name: username,
-      email: email,
-      password: password,
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          username,
+        },
+      },
     });
 
     if (error) {
-      setError(error.message!);
+      setError(error.message);
       return;
-    } else {
-      replace('/');
-      refresh();
-
-      toast({
-        title: 'Success',
-        description: 'You have successfully signed up.',
-      });
     }
+
+    replace('/');
+    refresh();
+
+    toast({
+      title: 'Success',
+      description: 'You have successfully signed up.',
+    });
   };
 
   return (
@@ -56,7 +61,7 @@ export function Signup() {
         </div>
       </div>
 
-      <Button onClick={handleSignIn}>Signup</Button>
+      <Button onClick={handleSignUp}>Signup</Button>
       {error && <p className='text-red-400 text-center'>{error}</p>}
     </div>
   );

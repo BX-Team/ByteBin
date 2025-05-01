@@ -1,6 +1,6 @@
 import { HomeButton } from '@/components/navbar/home-button';
-import { auth } from '@/common/auth';
-import { headers } from 'next/headers';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { Button } from '@/components/button';
 import { SignoutButton } from '@/components/auth/signout-button';
@@ -14,9 +14,10 @@ type NavbarProps = {
 };
 
 export async function Navbar({ loggedInButtons }: NavbarProps) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const supabase = createServerComponentClient({ cookies });
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
   return (
     <div>
@@ -29,7 +30,7 @@ export async function Navbar({ loggedInButtons }: NavbarProps) {
         </div>
 
         <div className='flex gap-2 items-center'>
-          {session == null ? (
+          {!session ? (
             <>
               <Link href='/auth/login'>
                 <Button>Login</Button>

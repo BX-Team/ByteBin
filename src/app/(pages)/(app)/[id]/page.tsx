@@ -30,9 +30,9 @@ Lines: ${paste.content.split('\n').length}
 Size: ${formatBytes(paste.size)}
 Language: ${paste.language}
 ${
-  paste.expiresAt !== null
+  paste.expires_at
     ? `
-Expires ${getRelativeTime(paste.expiresAt)}`
+Expires ${getRelativeTime(new Date(paste.expires_at))}`
     : ''
 }
 Click to view the Paste.

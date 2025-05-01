@@ -33,13 +33,14 @@ const pasteDetails: PasteDetails[] = [
   {
     type: 'paste',
     render: (paste?: Paste) => {
-      if (!paste || paste.expiresAt === null) {
+      if (!paste || !paste.expires_at) {
         return undefined;
       }
 
+      const expiresAt = new Date(paste.expires_at);
       return (
-        <Tooltip display={paste.expiresAt.toLocaleString()}>
-          <p>Expires {getRelativeTime(paste.expiresAt)}</p>
+        <Tooltip display={expiresAt.toLocaleString()}>
+          <p>Expires {getRelativeTime(expiresAt)}</p>
         </Tooltip>
       );
     },

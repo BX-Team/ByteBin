@@ -21,7 +21,7 @@ export function DashboardSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>{Config.siteTitle}</SidebarGroupLabel>
+          <SidebarGroupLabel>{Config.siteTitle} Dashboard</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {dashboardItems.map(item => (

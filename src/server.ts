@@ -2,7 +2,7 @@ import { createServer } from 'http';
 import { parse } from 'url';
 import next from 'next';
 import { schedule } from 'node-cron';
-import { expirePastes } from '@/common/prisma';
+import { expirePastes } from '@/common/supabase-db';
 import { Config } from '@/common/config';
 
 const port = parseInt(process.env.PORT || '3000', 10);

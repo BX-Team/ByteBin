@@ -52,7 +52,7 @@ export function getPaste(id: string) {
  */
 export async function getLoggedInUsersPastes(page: number) {
   const response = await ky
-    .get(`${Config.siteUrl}/api/user/pastes`, {
+    .get('/api/user/pastes', {
       searchParams: {
         page: page,
       },
@@ -71,5 +71,5 @@ export async function getLoggedInUsersPastes(page: number) {
  * @returns the statistics for the user.
  */
 export async function getLoggedInUsersPasteStatistics() {
-  return ky.get<UserStatistics>(`${Config.siteUrl}/api/user/pastes/stats`).json();
+  return ky.get<UserStatistics>('/api/user/pastes/stats').json();
 }

@@ -1,6 +1,3 @@
-import { createAuthClient } from 'better-auth/react';
-import { Config } from '@/common/config';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
-export const authClient = createAuthClient({
-  baseURL: Config.siteUrl,
-});
+export const authClient = createClientComponentClient();

@@ -5,6 +5,8 @@ export const Config = {
   hastebinUploadEndpoint: process.env.HASTEBIN_UPLOAD_ENDPOINT ?? '/documents',
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://bin.bxteam.org',
   siteTitle: process.env.NEXT_PUBLIC_SITE_TITLE ?? 'ByteBin',
+  supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+  supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
 } as const;
 
 if (Config.idLength <= 0) {

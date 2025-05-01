@@ -1,27 +1,51 @@
 import { NextRequest } from 'next/server';
-import { getPaste } from '@/common/prisma';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
+import { getPaste } from '@/common/supabase-db';
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const foundPaste = await getPaste((await params).id);
-  if (foundPaste == null) {
+  try {
+    const cookieStore = cookies();
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    const id = (await params).id;
+    console.log('Looking up paste:', id);
+
+    const foundPaste = await getPaste(id, true);
+    console.log('Found paste:', foundPaste);
+
+    if (foundPaste == null) {
+      return Response.json(
+        {
+          message: 'Paste not found',
+        },
+        {
+          status: 404,
+        },
+      );
+    }
+
+    return Response.json({
+      key: foundPaste.id,
+      ext: foundPaste.ext,
+      language: foundPaste.language,
+      expiresAt: foundPaste.expires_at,
+      content: foundPaste.content,
+      size: foundPaste.size,
+      timestamp: foundPaste.timestamp,
+    });
+  } catch (error) {
+    console.error('Error in paste route:', error);
     return Response.json(
       {
-        message: 'Paste not found',
+        message: 'Internal server error',
       },
       {
-        status: 404,
+        status: 500,
       },
     );
   }
-
-  const { id, ...paste } = foundPaste;
-  return Response.json({
-    key: id,
-    ext: paste.ext,
-    language: paste.language,
-    expiresAt: paste.expiresAt,
-    content: paste.content,
-    size: paste.size,
-    timestamp: paste.timestamp,
-  });
 }

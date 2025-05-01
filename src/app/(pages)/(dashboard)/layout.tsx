@@ -2,18 +2,22 @@ import { ReactNode } from 'react';
 import { Navbar } from '@/components/navbar/navbar';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { DashboardSidebar } from '@/components/dashboard/sidebar';
-import { auth } from '@/common/auth';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { redirect } from 'next/navigation';
-import { headers } from 'next/headers';
+import { cookies } from 'next/headers';
 
 export default async function DashboardLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  // Check if the user is logged in.
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (session == null) {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!session) {
     return redirect('/');
   }
 

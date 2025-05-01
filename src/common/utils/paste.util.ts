@@ -1,9 +1,9 @@
 import { cache } from 'react';
 import { randomString } from '@/common/utils/string.util';
 import { Config } from '@/common/config';
-import { getPaste, prismaClient } from '@/common/prisma';
+import { getPaste } from '@/common/supabase-db';
 import { Paste } from '@/types/paste';
-import { Paste as PrismaPaste } from '@prisma/client';
+import { Paste as SupabasePaste } from '@/common/supabase-db';
 
 /**
  * Generates a paste ID.
@@ -17,17 +17,16 @@ export async function generatePasteId(): Promise<string> {
   while (!foundId) {
     iterations++;
     const id = randomString(Config.idLength);
-    const paste = await prismaClient.paste.findUnique({
-      where: {
-        id: id,
-      },
-    });
 
-    if (!paste) {
-      foundId = id;
-    }
-    if (foundId) {
-      break;
+    try {
+      const paste = await getPaste(id);
+      if (!paste) {
+        foundId = id;
+        break;
+      }
+    } catch (error) {
+      console.error('Error checking paste ID:', error);
+      // Continue to next iteration
     }
 
     // Attempt to generate an id 100 times,
@@ -36,6 +35,10 @@ export async function generatePasteId(): Promise<string> {
       console.error('Failed to generate a unique paste ID after 100 attempts, please increase your paste id length.');
       throw new Error('Failed to generate a unique paste ID');
     }
+  }
+
+  if (!foundId) {
+    throw new Error('Failed to generate a unique paste ID');
   }
 
   return foundId;
@@ -49,15 +52,24 @@ export async function generatePasteId(): Promise<string> {
  * @returns The paste with the given ID.
  */
 export const lookupPaste = cache(async (id: string, incrementViews = false): Promise<Paste | null> => {
-  const paste = await getPaste(id.split('.')[0], incrementViews);
-  if (paste == null) {
+  try {
+    // Remove extension if present
+    const pasteId = id.split('.')[0];
+    const paste = await getPaste(pasteId, incrementViews);
+
+    if (!paste) {
+      console.error(`Paste not found: ${pasteId}`);
+      return null;
+    }
+
+    return {
+      ...paste,
+      key: id,
+    };
+  } catch (error) {
+    console.error('Error looking up paste:', error);
     return null;
   }
-
-  return {
-    ...paste,
-    key: id,
-  };
 });
 
 /**
@@ -66,7 +78,7 @@ export const lookupPaste = cache(async (id: string, incrementViews = false): Pro
  * @param paste the paste to add the properties to.
  * @returns the paste.
  */
-export function getPublicPaste(paste: Paste | PrismaPaste): Paste {
+export function getPublicPaste(paste: Paste | SupabasePaste): Paste {
   return {
     ...paste,
     key: paste.id,

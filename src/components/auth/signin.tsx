@@ -1,6 +1,6 @@
 'use client';
 
-import { authClient } from '@/common/auth-client';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +10,7 @@ import { toast } from '@/hooks/use-toast';
 
 export function SignIn() {
   const { replace, refresh } = useRouter();
+  const supabase = createClientComponentClient();
 
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState('');
@@ -17,23 +18,23 @@ export function SignIn() {
 
   const handleSignIn = async () => {
     setError(null);
-    const { error } = await authClient.signIn.email({
-      email: email,
-      password: password,
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
 
     if (error) {
-      setError(error.message!);
+      setError(error.message);
       return;
-    } else {
-      replace('/');
-      refresh();
-
-      toast({
-        title: 'Success',
-        description: 'You have successfully signed in.',
-      });
     }
+
+    replace('/');
+    refresh();
+
+    toast({
+      title: 'Success',
+      description: 'You have successfully signed in.',
+    });
   };
 
   return (

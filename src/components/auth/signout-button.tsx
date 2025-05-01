@@ -1,30 +1,17 @@
 'use client';
 
-import { authClient } from '@/common/auth-client';
 import { Button } from '@/components/button';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
-import { toast } from '@/hooks/use-toast';
 
 export function SignoutButton() {
   const router = useRouter();
+  const supabase = createClientComponentClient();
 
-  return (
-    <Button
-      onClick={() => {
-        authClient.signOut({
-          fetchOptions: {
-            onSuccess: () => {
-              router.refresh();
-              toast({
-                title: 'Success',
-                description: 'You have successfully signed out.',
-              });
-            },
-          },
-        });
-      }}
-    >
-      Logout
-    </Button>
-  );
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.refresh();
+  };
+
+  return <Button onClick={handleSignOut}>Sign Out</Button>;
 }
