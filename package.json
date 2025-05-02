@@ -7,8 +7,6 @@
     "next:build": "next build",
     "next:dev": "next dev --turbopack",
     "next:start": "next start",
-    "prisma:generate": "bunx prisma generate",
-    "prisma:migrate": "bunx prisma migrate deploy",
     "format": "biome format .",
     "format:fix": "biome format --write .",
     "check": "biome check .",
