@@ -12,10 +12,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     } = await supabase.auth.getSession();
 
     const id = (await params).id;
-    console.log('Looking up paste:', id);
-
     const foundPaste = await getPaste(id, true);
-    console.log('Found paste:', foundPaste);
 
     if (foundPaste == null) {
       return Response.json(

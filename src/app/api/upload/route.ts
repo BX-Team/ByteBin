@@ -68,7 +68,6 @@ export async function POST(req: NextRequest) {
     }
 
     const paste = await createPaste(body, expiresAt, session?.user);
-    console.log(`Paste created: ${paste.id}, ${formatBytes(paste.size)}`);
 
     // Verify the paste was created
     const verifyPaste = await getPaste(paste.id);

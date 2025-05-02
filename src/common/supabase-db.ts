@@ -55,8 +55,6 @@ export async function createPaste(content: string, expiresAt?: Date, uploader?: 
  */
 export async function getPaste(id: string, incrementViews = false) {
   try {
-    console.log('Getting paste:', id, 'incrementViews:', incrementViews);
-
     if (incrementViews) {
       // First get the current paste
       const { data: currentPaste, error: getError } = await supabase
@@ -89,7 +87,6 @@ export async function getPaste(id: string, incrementViews = false) {
       }
 
       if (updateData) {
-        console.log('Updated paste:', updateData);
         return updateData;
       }
     }
@@ -101,7 +98,6 @@ export async function getPaste(id: string, incrementViews = false) {
       throw error;
     }
 
-    console.log('Got paste:', data);
     return data;
   } catch (error) {
     console.error('Error in getPaste:', error);
