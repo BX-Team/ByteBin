@@ -31,7 +31,8 @@ export async function uploadPaste(
   if (response.status !== 200) {
     return { paste: null, error: (await response.json()) as ErrorResponse };
   }
-  return { paste: await response.json(), error: null };
+  const data = await response.json();
+  return { paste: data as Paste, error: null };
 }
 
 /**

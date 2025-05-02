@@ -2,7 +2,7 @@ export type Paste = {
   /**
    * The paste's ID.
    */
-  key: string;
+  id: string;
   /**
    * The paste's content.
    */

@@ -26,7 +26,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     return Response.json({
-      key: foundPaste.id,
+      id: foundPaste.id,
       ext: foundPaste.ext,
       language: foundPaste.language,
       expiresAt: foundPaste.expires_at,

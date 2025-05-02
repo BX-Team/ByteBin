@@ -19,9 +19,9 @@ export type Paste = {
  * Creates a new paste with a random ID.
  */
 export async function createPaste(content: string, expiresAt?: Date, uploader?: User) {
-  if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
-    expiresAt = undefined;
-  }
+  // Always set expiration to 2 weeks from now
+  const TWO_WEEKS = 60 * 60 * 24 * 14 * 1000; // 2 weeks in milliseconds
+  expiresAt = new Date(Date.now() + TWO_WEEKS);
 
   const ext = await getLanguage(content);
   const paste = {
@@ -31,7 +31,7 @@ export async function createPaste(content: string, expiresAt?: Date, uploader?: 
     ext,
     language: getLanguageName(ext),
     owner_id: uploader?.id,
-    expires_at: expiresAt?.toISOString(),
+    expires_at: expiresAt.toISOString(),
     timestamp: new Date().toISOString(),
     views: 0,
   };

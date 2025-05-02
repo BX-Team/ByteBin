@@ -3,7 +3,7 @@
 import { MonacoEditor } from '@/components/monaco-editor';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { Footer } from '@/components/footer';
-import { Paste } from '@/common/types';
+import { Paste } from '@/types/paste';
 
 interface PasteViewProps {
   paste: Paste | null;
