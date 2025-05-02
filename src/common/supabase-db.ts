@@ -109,10 +109,20 @@ export async function getPaste(id: string, incrementViews = false) {
  * Expires all pastes that have expired.
  */
 export async function expirePastes() {
-  const { data, error } = await supabase.from('pastes').delete().lt('expires_at', new Date().toISOString());
+  const { data: expiredPastes, error: selectError } = await supabase
+    .from('pastes')
+    .select('id, views')
+    .lt('expires_at', new Date().toISOString());
+
+  if (selectError) throw selectError;
+
+  const { data, error } = await supabase
+    .from('pastes')
+    .delete()
+    .lt('expires_at', new Date().toISOString());
 
   if (error) throw error;
-  console.log(`Expired ${(data as unknown[] | null)?.length || 0} pastes`);
+  console.log(`Expired ${expiredPastes?.length || 0} pastes`);
 }
 
 /**
