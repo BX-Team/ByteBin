@@ -33,7 +33,7 @@ export default async function AuthPage({ params }: AuthProps) {
   }
 
   return (
-    <div className='items-center justify-center w-full h-full flex flex-grow'>
+    <div className='items-center justify-center w-full h-full flex grow'>
       <div className='bg-background-secondary rounded-md p-3 w-[400px]'>{auth.render()}</div>
     </div>
   );

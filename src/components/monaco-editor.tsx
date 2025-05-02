@@ -63,7 +63,7 @@ export function MonacoEditor({
   };
 
   return (
-    <div className='flex flex-row flex-grow pl-[0.5rem] pt-[0.5rem] gap-2 text-sm z-10 h-[calc(100vh-120px)] overflow-hidden'>
+    <div className='flex flex-row grow pl-[0.5rem] pt-[0.5rem] gap-2 text-sm z-10 h-[calc(100vh-120px)] overflow-hidden'>
       <Editor
         height='100%'
         theme={theme.id}

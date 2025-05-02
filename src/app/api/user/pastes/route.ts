@@ -32,15 +32,17 @@ export async function GET(req: NextRequest) {
     // Create the page object
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     if (totalItems === 0) {
-      return NextResponse.json(SuperJSON.serialize({
-        items: [],
-        metadata: {
-          page: 1,
-          totalItems: 0,
-          itemsPerPage,
-          totalPages: 1,
-        },
-      }));
+      return NextResponse.json(
+        SuperJSON.serialize({
+          items: [],
+          metadata: {
+            page: 1,
+            totalItems: 0,
+            itemsPerPage,
+            totalPages: 1,
+          },
+        }),
+      );
     }
 
     if (page > totalPages) {

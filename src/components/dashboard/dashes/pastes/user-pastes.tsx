@@ -104,7 +104,7 @@ export function UserPastes() {
                       </p>
                     </Link>
                   </div>
-                  <div className='text-sm flex-grow'>
+                  <div className='text-sm grow'>
                     <Highlighter language={paste.ext} content={getLines(paste.content, 3).join('\n')} />
                   </div>
 

@@ -13,8 +13,8 @@ interface PasteViewProps {
 export function PasteView({ paste, id }: PasteViewProps) {
   return (
     <ThemeProvider>
-      <main className='flex flex-col gap-1 h-full flex-grow'>
-        <div className='overflow-x-auto h-full flex flex-grow w-full text-sm'>
+      <main className='flex flex-col gap-1 h-full grow'>
+        <div className='overflow-x-auto h-full flex grow w-full text-sm'>
           {paste ? (
             <MonacoEditor content={paste.content} language={paste.ext} readOnly={true} onChange={() => {}} />
           ) : (

@@ -80,7 +80,7 @@ function Page() {
         event.preventDefault();
         await createPaste(event);
       }}
-      className='flex flex-col h-full flex-grow gap-1 w-full'
+      className='flex flex-col h-full grow gap-1 w-full'
     >
       <MonacoEditor content={content} onChange={setContent} language={selectedLanguage} />
 

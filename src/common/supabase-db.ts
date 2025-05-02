@@ -116,10 +116,7 @@ export async function expirePastes() {
 
   if (selectError) throw selectError;
 
-  const { data, error } = await supabase
-    .from('pastes')
-    .delete()
-    .lt('expires_at', new Date().toISOString());
+  const { data, error } = await supabase.from('pastes').delete().lt('expires_at', new Date().toISOString());
 
   if (error) throw error;
   console.log(`Expired ${expiredPastes?.length || 0} pastes`);
