@@ -74,3 +74,13 @@ export async function getLoggedInUsersPastes(page: number) {
 export async function getLoggedInUsersPasteStatistics() {
   return ky.get<UserStatistics>('/api/user/pastes/stats').json();
 }
+
+/**
+ * Deletes a paste by ID.
+ *
+ * @param id The ID of the paste to delete.
+ * @returns The response from the server.
+ */
+export async function deletePaste(id: string) {
+  return ky.delete(`/api/paste/${id}`).json();
+}

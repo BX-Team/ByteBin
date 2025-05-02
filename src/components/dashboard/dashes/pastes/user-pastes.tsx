@@ -1,7 +1,7 @@
 'use client';
 
-import { getLoggedInUsersPastes } from '@/common/api';
-import { useQuery } from '@tanstack/react-query';
+import { deletePaste, getLoggedInUsersPastes } from '@/common/api';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Pagination from '@/components/pagination';
 import { Page } from '@/common/pagination/pagination';
 import { Paste } from '@/types/paste';
@@ -9,7 +9,6 @@ import { ReactNode, useEffect, useState } from 'react';
 import Highlighter from '@/components/highlighter';
 import { formatBytes, formatNumber, getLines } from '@/common/utils/string.util';
 import Link from 'next/link';
-import { PasteCreatedTime } from '@/components/paste/created-time';
 import Tooltip from '@/components/tooltip';
 import { getRelativeTime } from '@/common/utils/date.util';
 import { useSearchParams } from 'next/navigation';
@@ -48,6 +47,7 @@ export function UserPastes() {
   const isMobile = useIsMobile();
   const searchParams = useSearchParams();
   const { navigateToPage } = usePageNavigation();
+  const queryClient = useQueryClient();
 
   const [page, setPage] = useState(searchParams.get('page') ? Number(searchParams.get('page')) : 1);
   const [pastes, setPastes] = useState<Page<Paste> | null>(null);
@@ -56,6 +56,19 @@ export function UserPastes() {
     queryKey: ['dashboard:pastes', page],
     queryFn: () => getLoggedInUsersPastes(page),
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: deletePaste,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['dashboard:pastes'] });
+    },
+  });
+
+  const handleDelete = async (id: string) => {
+    if (confirm('Are you sure you want to delete this paste?')) {
+      await deleteMutation.mutateAsync(id);
+    }
+  };
 
   /**
    * Updates the pastes and sets the page URL.
@@ -110,8 +123,13 @@ export function UserPastes() {
                         );
                       })}
                     </div>
-                    <div className='min-w-[125px] flex justify-end'>
-                      <PasteCreatedTime createdAt={paste.timestamp} />
+                    <div className='min-w-[125px] flex justify-end gap-2'>
+                      <button
+                        onClick={() => handleDelete(paste.id)}
+                        className='text-red-500 hover:text-red-600 transition-colors'
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
                 </div>

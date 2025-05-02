@@ -46,3 +46,40 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     );
   }
 }
+
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const cookieStore = await cookies();
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    const id = (await params).id;
+    const { error } = await supabase.from('pastes').delete().eq('id', id);
+
+    if (error) {
+      console.error('Error deleting paste:', error);
+      return Response.json(
+        {
+          message: 'Failed to delete paste',
+        },
+        {
+          status: 500,
+        },
+      );
+    }
+
+    return Response.json({ success: true });
+  } catch (error) {
+    console.error('Error in paste route:', error);
+    return Response.json(
+      {
+        message: 'Internal server error',
+      },
+      {
+        status: 500,
+      },
+    );
+  }
+}

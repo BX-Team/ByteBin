@@ -3,28 +3,20 @@
 import { getRelativeTime } from '@/common/utils/date.util';
 import { useEffect, useState } from 'react';
 
-type PasteCreatedTimeProps = {
+interface PasteCreatedTimeProps {
   /**
    * The date the paste was created.
    */
   createdAt: string;
-};
+}
 
 export function PasteCreatedTime({ createdAt }: PasteCreatedTimeProps) {
-  const [relativeTime, setRelativeTime] = useState<string>('');
+  const [formattedTime, setFormattedTime] = useState('');
 
   useEffect(() => {
-    try {
-      const date = new Date(createdAt);
-      if (isNaN(date.getTime())) {
-        setRelativeTime('Invalid date');
-        return;
-      }
-      setRelativeTime(getRelativeTime(date));
-    } catch (error) {
-      setRelativeTime('Invalid date');
-    }
+    const date = new Date(createdAt);
+    setFormattedTime(getRelativeTime(date));
   }, [createdAt]);
 
-  return <p className='text-xs'>{relativeTime}</p>;
+  return <p>{formattedTime}</p>;
 }

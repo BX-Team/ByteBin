@@ -4,6 +4,10 @@ export type Paste = {
    */
   id: string;
   /**
+   * The paste's key (same as id, used for URLs).
+   */
+  key: string;
+  /**
    * The paste's content.
    */
   content: string;

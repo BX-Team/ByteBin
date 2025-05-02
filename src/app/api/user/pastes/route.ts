@@ -29,17 +29,29 @@ export async function GET(req: NextRequest) {
       countOnly: true,
     });
 
+    // Create the page object
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    if (totalItems === 0) {
+      return NextResponse.json(SuperJSON.serialize({
+        items: [],
+        metadata: {
+          page: 1,
+          totalItems: 0,
+          itemsPerPage,
+          totalPages: 1,
+        },
+      }));
+    }
+
+    if (page > totalPages) {
+      return buildErrorResponse('Invalid page number', 400);
+    }
+
     // Get the pastes for the current page
     const { pastes } = await getUsersPastes(session.user, {
       skip: (page - 1) * itemsPerPage,
       take: itemsPerPage,
     });
-
-    // Create the page object
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    if (page > totalPages) {
-      return buildErrorResponse('Invalid page number', 400);
-    }
 
     const pageData = {
       items: pastes.map(paste => getPublicPaste(paste)),

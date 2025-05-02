@@ -28,10 +28,6 @@ const pasteDetails: PasteDetails[] = [
   },
   {
     type: 'paste',
-    render: (paste?: Paste) => paste && <PasteCreatedTime createdAt={paste.timestamp} />,
-  },
-  {
-    type: 'paste',
     render: (paste?: Paste) => {
       if (!paste || !paste.expires_at) {
         return undefined;
