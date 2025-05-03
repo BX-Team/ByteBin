@@ -53,8 +53,5 @@
     "tailwindcss": "^4.1.5",
     "typescript": "^5"
   },
-  "packageManager": "bun@1.2.10",
-  "patchedDependencies": {
-    "monaco-editor@0.52.2": "patches/monaco-editor@0.52.2.patch"
-  }
+  "packageManager": "bun@1.2.10"
 }
