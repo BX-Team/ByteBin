@@ -1,13 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
-import { Config } from '@netlify/functions';
 
-// Handler function for the Netlify Function
 export default async (req: Request) => {
-  // Get environment variables
   const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_ANON_KEY;
   
-  // Validate environment variables exist
   if (!supabaseUrl || !supabaseKey) {
     console.error('Missing Supabase environment variables');
     return new Response(JSON.stringify({ error: 'Server configuration error' }), {
@@ -16,11 +12,9 @@ export default async (req: Request) => {
     });
   }
   
-  // Create Supabase client inside the function
   const supabase = createClient(supabaseUrl, supabaseKey);
   
   try {
-    // Get expired pastes
     const { data: expiredPastes, error: selectError } = await supabase
       .from('pastes')
       .select('id, views')
@@ -28,7 +22,6 @@ export default async (req: Request) => {
     
     if (selectError) throw selectError;
     
-    // Delete expired pastes
     const { data, error } = await supabase
       .from('pastes')
       .delete()
@@ -51,9 +44,4 @@ export default async (req: Request) => {
       headers: { 'Content-Type': 'application/json' }
     });
   }
-};
-
-// Optional: Configure function to run on a schedule using Netlify's config
-export const config: Config = {
-  schedule: '@daily' // Run once per day
 };
