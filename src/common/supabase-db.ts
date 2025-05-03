@@ -1,7 +1,6 @@
 import { supabase } from './supabase';
 import { generatePasteId } from '@/common/utils/paste.util';
 import { getLanguage, getLanguageName } from '@/common/utils/lang.util';
-import { User } from '@supabase/supabase-js';
 
 export type Paste = {
   id: string;
@@ -9,7 +8,6 @@ export type Paste = {
   size: number;
   ext: string;
   language: string;
-  owner_id?: string;
   expires_at?: string;
   timestamp: string;
   views: number;
@@ -18,9 +16,8 @@ export type Paste = {
 /**
  * Creates a new paste with a random ID.
  */
-export async function createPaste(content: string, expiresAt?: Date, uploader?: User) {
-  // Always set expiration to 2 weeks from now
-  const TWO_WEEKS = 60 * 60 * 24 * 14 * 1000; // 2 weeks in milliseconds
+export async function createPaste(content: string, expiresAt?: Date) {
+  const TWO_WEEKS = 60 * 60 * 24 * 14 * 1000;
   expiresAt = new Date(Date.now() + TWO_WEEKS);
 
   const ext = await getLanguage(content);
@@ -30,7 +27,6 @@ export async function createPaste(content: string, expiresAt?: Date, uploader?: 
     size: Buffer.byteLength(content),
     ext,
     language: getLanguageName(ext),
-    owner_id: uploader?.id,
     expires_at: expiresAt.toISOString(),
     timestamp: new Date().toISOString(),
     views: 0,
@@ -120,54 +116,4 @@ export async function expirePastes() {
 
   if (error) throw error;
   console.log(`Expired ${expiredPastes?.length || 0} pastes`);
-}
-
-/**
- * Gets all pastes for a user.
- */
-export async function getUsersPastes(
-  user: User,
-  options?: {
-    skip?: number;
-    take?: number;
-    countOnly?: boolean;
-  },
-): Promise<{ pastes: Paste[]; totalItems: number }> {
-  const { count, error: countError } = await supabase
-    .from('pastes')
-    .select('*', { count: 'exact', head: true })
-    .eq('owner_id', user.id);
-
-  if (countError) throw countError;
-
-  if (options?.countOnly) {
-    return { pastes: [], totalItems: count || 0 };
-  }
-
-  const { data, error } = await supabase
-    .from('pastes')
-    .select()
-    .eq('owner_id', user.id)
-    .order('timestamp', { ascending: false })
-    .range(options?.skip || 0, (options?.skip || 0) + (options?.take || 10) - 1);
-
-  if (error) throw error;
-  return { pastes: data || [], totalItems: count || 0 };
-}
-
-/**
- * Gets the statistics for a user.
- */
-export async function getUserPasteStatistics(user: User) {
-  const { data, error } = await supabase.from('pastes').select('views').eq('owner_id', user.id);
-
-  if (error) throw error;
-
-  const totalPastes = data?.length || 0;
-  const totalViews = data?.reduce((sum, paste) => sum + (paste.views || 0), 0) || 0;
-
-  return {
-    totalPastes,
-    totalViews,
-  };
 }

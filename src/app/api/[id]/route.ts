@@ -17,7 +17,6 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       );
     }
 
-    // Return content with appropriate Content-Type header
     return new Response(foundPaste.content, {
       headers: {
         'Content-Type': `text/${foundPaste.language || 'plain'}`,

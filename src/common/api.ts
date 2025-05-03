@@ -1,86 +1,61 @@
 import ky from 'ky';
-import { Paste } from '@/types/paste';
-import { Config } from '@/common/config';
-import { Page } from '@/common/pagination/pagination';
-import SuperJSON from 'superjson';
-import { UserStatistics } from '@/common/types/user/paste-statistics';
-import { ErrorResponse } from '@/common/types/error/error-response';
+import { Config } from './config';
+import { Paste } from './supabase-db';
+
+export type Page<T> = {
+  items: T[];
+  total: number;
+  page: number;
+  size: number;
+};
 
 /**
- * Uploads a new paste.
+ * Uploads a paste to the server.
  *
- * @param content the content of the paste.
- * @param expires the expiration time in seconds.
- * @param language the programming language of the paste.
- * @returns the response from the server or the error.
+ * @param content the content to upload.
+ * @param expires the number of seconds until the paste expires.
+ * @param language the language of the paste.
+ * @returns the paste and any error that occurred.
  */
-export async function uploadPaste(
-  content: string,
-  expires?: number,
-  language: string = 'plaintext',
-): Promise<{ paste: Paste | null; error: ErrorResponse | null }> {
-  const response = await ky.post<Paste | ErrorResponse>('/api/upload', {
+export async function uploadPaste(content: string, expires?: number, language = 'plaintext') {
+  const response = await ky.post('/api/post', {
     body: content,
     searchParams: {
-      ...(expires && expires > 0 ? { expires: expires } : {}),
-      language: language,
+      ...(expires && expires > 0 ? { expires } : {}),
+      language,
     },
     throwHttpErrors: false,
   });
 
   if (response.status !== 200) {
-    return { paste: null, error: (await response.json()) as ErrorResponse };
+    return {
+      paste: null,
+      error: await response.json(),
+    };
   }
-  const data = await response.json();
-  return { paste: data as Paste, error: null };
+
+  return {
+    paste: await response.json(),
+    error: null,
+  };
 }
 
 /**
  * Gets a paste by ID.
  *
- * @param id The ID of the paste to get.
- * @returns The response from the server.
+ * @param id the ID of the paste to get.
+ * @returns the paste.
  */
 export function getPaste(id: string) {
-  return ky.get<Paste>(`/api/paste/${id}`).json();
-}
-
-/**
- * Gets the pastes for the logged-in user.
- *
- * @param page the page to fetch.
- * @returns the pastes for the page.
- */
-export async function getLoggedInUsersPastes(page: number) {
-  const response = await ky
-    .get('/api/user/pastes', {
-      searchParams: {
-        page: page,
-      },
-    })
-    .text();
-  if (!response) {
-    return;
-  }
-
-  return SuperJSON.parse<Page<Paste>>(response);
-}
-
-/**
- * Gets the paste statistics for the logged-in user.
- *
- * @returns the statistics for the user.
- */
-export async function getLoggedInUsersPasteStatistics() {
-  return ky.get<UserStatistics>('/api/user/pastes/stats').json();
+  return ky.get(`/api/${id}`).json();
 }
 
 /**
  * Deletes a paste by ID.
  *
- * @param id The ID of the paste to delete.
- * @returns The response from the server.
+ * @param id the ID of the paste to delete.
+ * @returns the response.
  */
 export async function deletePaste(id: string) {
-  return ky.delete(`/api/paste/${id}`).json();
+  return ky.delete(`/api/${id}`).json();
 }
