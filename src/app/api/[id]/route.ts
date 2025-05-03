@@ -2,7 +2,8 @@ import { NextRequest } from 'next/server';
 import { getPaste } from '@/common/supabase-db';
 import { Config } from '@/common/config';
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const id = params.id;
     const foundPaste = await getPaste(id, true);
