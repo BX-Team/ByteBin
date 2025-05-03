@@ -99,9 +99,9 @@ export function UserPastes() {
                       draggable={false}
                       className='hover:text-link transition-all transform-gpu text-sm'
                     >
-                      <p>
-                        {paste.id}.{paste.ext}
-                      </p>
+                      <div className='flex items-center gap-2'>
+                        <span className='font-mono'>{paste.id}</span>
+                      </div>
                     </Link>
                   </div>
                   <div className='text-sm grow'>

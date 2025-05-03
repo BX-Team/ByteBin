@@ -16,7 +16,7 @@ export function PasteView({ paste, id }: PasteViewProps) {
       <main className='flex flex-col gap-1 h-full grow'>
         <div className='overflow-x-auto h-full flex grow w-full text-sm'>
           {paste ? (
-            <MonacoEditor content={paste.content} language={paste.ext} readOnly={true} onChange={() => {}} />
+            <MonacoEditor content={paste.content} language={paste.language} readOnly={true} onChange={() => {}} />
           ) : (
             <div className='text-center w-full items-center mt-5'>
               <p className='text-xl text-red-400'>404</p>

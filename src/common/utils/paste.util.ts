@@ -64,7 +64,7 @@ export const lookupPaste = cache(async (id: string, incrementViews = false): Pro
 
     return {
       ...paste,
-      key: id,
+      key: pasteId,
     };
   } catch (error) {
     console.error('Error looking up paste:', error);
@@ -82,5 +82,6 @@ export function getPublicPaste(paste: Paste | SupabasePaste): Paste {
   return {
     ...paste,
     key: paste.id,
+    expires_at: paste.expires_at ?? null,
   };
 }

@@ -70,8 +70,8 @@ function Page() {
       title: 'Success',
       description: 'Paste created successfully, copied to clipboard!',
     });
-    await navigator.clipboard.writeText(`${Config.siteUrl}/${paste.key}.${paste.ext}`);
-    redirect(`/${paste.key}.${paste.ext}`);
+    await navigator.clipboard.writeText(`${Config.siteUrl}/${paste.key}`);
+    redirect(`/${paste.key}`);
   }
 
   return (

@@ -62,4 +62,4 @@ export async function PUT(req: NextRequest) {
     console.error('Error creating paste:', error);
     return buildErrorResponse('Failed to create paste', 500);
   }
-} 
+}

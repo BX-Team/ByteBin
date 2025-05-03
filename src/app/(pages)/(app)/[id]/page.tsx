@@ -19,7 +19,7 @@ export async function generateMetadata(props: PasteProps): Promise<Metadata> {
     return defaultMetadata();
   }
 
-  const formattedId = `${paste.id}.${paste.ext}`;
+  const formattedId = `${paste.id}`;
   return {
     ...defaultMetadata(false),
     title: formattedId,

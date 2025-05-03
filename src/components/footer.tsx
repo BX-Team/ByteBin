@@ -119,7 +119,7 @@ export function Footer({ paste, editDetails, selectedLanguage, onLanguageChange 
               <Link href={`/?duplicate=${encodeURI(paste.id)}`}>
                 <Button>Duplicate</Button>
               </Link>
-              <Link href={`/raw/${paste.id}.${paste.ext}`}>
+              <Link href={`/raw/${paste.id}`}>
                 <Button>Raw</Button>
               </Link>
               <Link href='/'>

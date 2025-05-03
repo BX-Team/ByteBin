@@ -67,7 +67,7 @@ export function MonacoEditor({
       <Editor
         height='100%'
         theme={theme.id}
-        language={language === 'plain' ? 'plaintext' : language}
+        language={language === 'plain' ? 'plaintext' : language.toLowerCase()}
         value={content}
         onChange={value => onChange(value || '')}
         options={{

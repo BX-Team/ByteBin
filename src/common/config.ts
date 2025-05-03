@@ -1,5 +1,5 @@
 export const Config = {
-  idLength: Number(process.env.PASTE_ID_LENGTH) ?? 8,
+  idLength: Number(process.env.PASTE_ID_LENGTH) ?? 10,
   maxPasteSize: Number(process.env.PASTE_MAX_SIZE) ?? 1024 * 50,
   maxExpiryLength: Number(process.env.PASTE_MAX_EXPIRY_LENGTH) ?? 60 * 60 * 24 * 365,
   hastebinUploadEndpoint: process.env.HASTEBIN_UPLOAD_ENDPOINT ?? '/documents',
