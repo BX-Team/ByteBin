@@ -43,7 +43,9 @@ You can submit content most easily using [curl](https://curl.se/docs/manpage.htm
 </details>
 
 ##### 3) From Code
-Send GET/POST/PUT requests to `https://bin.bxteam.org/`. More info [below](#pastesdev-api).
+Send GET/POST/PUT requests to `https://bin.bxteam.org/`. More info [below](#API).
+
+---
 
 ### About
 The frontend is written using the Next.js framework with TypeScript, providing both server and client-side rendering capabilities. The UI is built with React and styled using Tailwind CSS with shadcn/ui components for a modern look and feel. For the backend, we leverage Next.js API routes along with Supabase for the database and authentication. The application includes built-in rate limiting and content filtering systems to prevent abuse.
@@ -76,3 +78,4 @@ Please, follow the rules described in the file [RULES.md](RULES.md) when using t
   * The request body should contain the content you want to upload.
   * You can also specify the language by adding a query parameter `?language=<language>` to the end of URL.
   * The response will be a JSON object containing the paste's id, language, expiration date, and URL.
+

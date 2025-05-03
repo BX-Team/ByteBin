@@ -1,0 +1,7 @@
+services:
+  bytebin:
+    image: ghcr.io/BX-Team/ByteBin
+    env_file: ".env"
+
+volumes:
+  data: {}
