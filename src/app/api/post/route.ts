@@ -73,7 +73,7 @@ async function handlePasteCreation(req: NextRequest) {
       id: paste.id,
       ext: paste.ext,
       expires_at: paste.expires_at,
-      url: `${Config.siteUrl}/${paste.id}`
+      url: `${Config.siteUrl}/${paste.id}`,
     });
   } catch (error) {
     console.error('Error creating paste:', error);

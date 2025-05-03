@@ -1,5 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { languages } from '@/common/utils/languages';
+import { languages } from '@/common/utils/lang.util';
 
 interface LanguageSelectProps {
   value: string;

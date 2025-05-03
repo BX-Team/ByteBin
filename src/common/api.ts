@@ -26,7 +26,11 @@ export type ApiResponse<T> = {
  * @param language the language of the paste.
  * @returns the paste and any error that occurred.
  */
-export async function uploadPaste(content: string, expires?: number, language = 'plaintext'): Promise<ApiResponse<Paste>> {
+export async function uploadPaste(
+  content: string,
+  expires?: number,
+  language = 'plaintext',
+): Promise<ApiResponse<Paste>> {
   const response = await ky.post('/api/post', {
     body: content,
     searchParams: {
@@ -57,14 +61,4 @@ export async function uploadPaste(content: string, expires?: number, language = 
  */
 export function getPaste(id: string): Promise<Paste> {
   return ky.get(`/api/${id}`).json();
-}
-
-/**
- * Deletes a paste by ID.
- *
- * @param id the ID of the paste to delete.
- * @returns the response.
- */
-export async function deletePaste(id: string) {
-  return ky.delete(`/api/${id}`).json();
 }

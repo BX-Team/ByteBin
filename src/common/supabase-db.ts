@@ -1,12 +1,10 @@
 import { supabase } from './supabase';
 import { generatePasteId } from '@/common/utils/paste.util';
-import { getLanguage, getLanguageName } from '@/common/utils/lang.util';
 
 export type Paste = {
   id: string;
   content: string;
   size: number;
-  ext: string;
   language: string;
   expires_at?: string;
   timestamp: string;
@@ -20,19 +18,14 @@ export async function createPaste(content: string, expiresAt?: Date, language?: 
   const TWO_WEEKS = 60 * 60 * 24 * 14 * 1000;
   expiresAt = new Date(Date.now() + TWO_WEEKS);
 
-  let ext = language || await getLanguage(content);
-  if (language) {
-    ext = language;
-  }
-
-  const capitalizedLanguage = ext.charAt(0).toUpperCase() + ext.slice(1);
+  let detectedLanguage = language || 'plain';
+  const formattedLanguage = detectedLanguage.charAt(0).toUpperCase() + detectedLanguage.slice(1);
 
   const paste = {
     id: await generatePasteId(),
     content,
     size: Buffer.byteLength(content),
-    ext,
-    language: capitalizedLanguage,
+    language: formattedLanguage,
     expires_at: expiresAt.toISOString(),
     timestamp: new Date().toISOString(),
     views: 0,
@@ -122,4 +115,29 @@ export async function expirePastes() {
 
   if (error) throw error;
   console.log(`Expired ${expiredPastes?.length || 0} pastes`);
+}
+
+/**
+ * Updates the language of a paste.
+ */
+export async function updatePasteLanguage(id: string, language: string) {
+  const formattedLanguage = language.charAt(0).toUpperCase() + language.slice(1);
+
+  const { data, error } = await supabase
+    .from('pastes')
+    .update({ language: formattedLanguage })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating paste language:', error);
+    throw error;
+  }
+
+  if (!data) {
+    throw new Error('Failed to update paste language: no data returned');
+  }
+
+  return data;
 }

@@ -31,19 +31,21 @@ function Page() {
 
   useEffect(() => {
     if (duplicate && content == '') {
-      getPaste(duplicate).then((paste) => {
-        const newPage = '/';
-        const newState = { page: newPage };
-        window.history.replaceState(newState, '', newPage);
-        setContent(paste.content);
-        setSelectedLanguage(paste.ext);
-      }).catch((error) => {
-        console.error('Error loading duplicate paste:', error);
-        toast({
-          title: 'Error',
-          description: 'Failed to load the paste to duplicate',
+      getPaste(duplicate)
+        .then(paste => {
+          const newPage = '/';
+          const newState = { page: newPage };
+          window.history.replaceState(newState, '', newPage);
+          setContent(paste.content);
+          setSelectedLanguage(paste.language.toLowerCase());
+        })
+        .catch(error => {
+          console.error('Error loading duplicate paste:', error);
+          toast({
+            title: 'Error',
+            description: 'Failed to load the paste to duplicate',
+          });
         });
-      });
     }
   }, [content, duplicate]);
 
