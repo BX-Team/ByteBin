@@ -31,12 +31,18 @@ function Page() {
 
   useEffect(() => {
     if (duplicate && content == '') {
-      getPaste(duplicate).then((paste: Paste) => {
+      getPaste(duplicate).then((paste) => {
         const newPage = '/';
         const newState = { page: newPage };
         window.history.replaceState(newState, '', newPage);
         setContent(paste.content);
-        setSelectedLanguage(paste.language);
+        setSelectedLanguage(paste.ext);
+      }).catch((error) => {
+        console.error('Error loading duplicate paste:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load the paste to duplicate',
+        });
       });
     }
   }, [content, duplicate]);
@@ -61,7 +67,7 @@ function Page() {
     if (error !== null || paste == null) {
       toast({
         title: 'Error',
-        description: error?.error ?? 'Failed to create your paste :(',
+        description: error?.message ?? 'Failed to create your paste :(',
       });
       return;
     }
@@ -70,8 +76,8 @@ function Page() {
       title: 'Success',
       description: 'Paste created successfully, copied to clipboard!',
     });
-    await navigator.clipboard.writeText(`${Config.siteUrl}/${paste.key}`);
-    redirect(`/${paste.key}`);
+    await navigator.clipboard.writeText(`${Config.siteUrl}/${paste.id}`);
+    window.location.href = `/${paste.id}`;
   }
 
   return (

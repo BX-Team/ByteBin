@@ -3,7 +3,6 @@ import { randomString } from '@/common/utils/string.util';
 import { Config } from '@/common/config';
 import { getPaste } from '@/common/supabase-db';
 import { Paste } from '@/types/paste';
-import { Paste as SupabasePaste } from '@/common/supabase-db';
 
 /**
  * Generates a paste ID.
@@ -71,17 +70,3 @@ export const lookupPaste = cache(async (id: string, incrementViews = false): Pro
     return null;
   }
 });
-
-/**
- * Adds the additional properties to a paste.
- *
- * @param paste the paste to add the properties to.
- * @returns the paste.
- */
-export function getPublicPaste(paste: Paste | SupabasePaste): Paste {
-  return {
-    ...paste,
-    key: paste.id,
-    expires_at: paste.expires_at ?? null,
-  };
-}

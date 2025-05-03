@@ -16,17 +16,23 @@ export type Paste = {
 /**
  * Creates a new paste with a random ID.
  */
-export async function createPaste(content: string, expiresAt?: Date) {
+export async function createPaste(content: string, expiresAt?: Date, language?: string) {
   const TWO_WEEKS = 60 * 60 * 24 * 14 * 1000;
   expiresAt = new Date(Date.now() + TWO_WEEKS);
 
-  const ext = await getLanguage(content);
+  let ext = language || await getLanguage(content);
+  if (language) {
+    ext = language;
+  }
+
+  const capitalizedLanguage = ext.charAt(0).toUpperCase() + ext.slice(1);
+
   const paste = {
     id: await generatePasteId(),
     content,
     size: Buffer.byteLength(content),
     ext,
-    language: getLanguageName(ext),
+    language: capitalizedLanguage,
     expires_at: expiresAt.toISOString(),
     timestamp: new Date().toISOString(),
     views: 0,

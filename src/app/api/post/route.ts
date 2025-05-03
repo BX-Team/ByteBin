@@ -24,6 +24,7 @@ async function handlePasteCreation(req: NextRequest) {
 
   try {
     const body = await req.text();
+    const language = req.nextUrl.searchParams.get('language') || undefined;
 
     // Validate the request body
     if (body == undefined || body == '') {
@@ -59,7 +60,7 @@ async function handlePasteCreation(req: NextRequest) {
       return buildErrorResponse('Expiry date is too far in the future', 400);
     }
 
-    const paste = await createPaste(body, expiresAt);
+    const paste = await createPaste(body, expiresAt, language);
 
     // Verify the paste was created
     const verifyPaste = await getPaste(paste.id);
@@ -69,9 +70,10 @@ async function handlePasteCreation(req: NextRequest) {
     }
 
     return Response.json({
-      key: paste.id,
+      id: paste.id,
       ext: paste.ext,
-      expiresAt: paste.expires_at,
+      expires_at: paste.expires_at,
+      url: `${Config.siteUrl}/${paste.id}`
     });
   } catch (error) {
     console.error('Error creating paste:', error);

@@ -4,13 +4,13 @@ export type Paste = {
    */
   id: string;
   /**
-   * The paste's key (same as id, used for URLs).
-   */
-  key: string;
-  /**
    * The paste's content.
    */
   content: string;
+  /**
+   * The paste's size in bytes.
+   */
+  size: number;
   /**
    * The paste's file extension.
    */
@@ -22,11 +22,7 @@ export type Paste = {
   /**
    * The paste's expiration date.
    */
-  expires_at: string | null;
-  /**
-   * The paste's size in bytes.
-   */
-  size: number;
+  expires_at?: string;
   /**
    * The paste's creation timestamp.
    */

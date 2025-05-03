@@ -13,7 +13,7 @@ export const languages = {
     'shell',
     'ruby',
     'rust',
-    'sql',
+    'mysql',
     'go',
     'lua',
     'swift',

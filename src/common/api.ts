@@ -9,6 +9,15 @@ export type Page<T> = {
   size: number;
 };
 
+export type ApiError = {
+  message: string;
+};
+
+export type ApiResponse<T> = {
+  paste: T | null;
+  error: ApiError | null;
+};
+
 /**
  * Uploads a paste to the server.
  *
@@ -17,7 +26,7 @@ export type Page<T> = {
  * @param language the language of the paste.
  * @returns the paste and any error that occurred.
  */
-export async function uploadPaste(content: string, expires?: number, language = 'plaintext') {
+export async function uploadPaste(content: string, expires?: number, language = 'plaintext'): Promise<ApiResponse<Paste>> {
   const response = await ky.post('/api/post', {
     body: content,
     searchParams: {
@@ -46,7 +55,7 @@ export async function uploadPaste(content: string, expires?: number, language = 
  * @param id the ID of the paste to get.
  * @returns the paste.
  */
-export function getPaste(id: string) {
+export function getPaste(id: string): Promise<Paste> {
   return ky.get(`/api/${id}`).json();
 }
 
