@@ -1,4 +1,4 @@
-import { Navbar } from '@/components/navbar/navbar';
+import { Navbar } from '@/components/navbar';
 import { PasteExpiryProvider } from '@/providers/paste-expiry-provider';
 
 import { ReactNode } from 'react';

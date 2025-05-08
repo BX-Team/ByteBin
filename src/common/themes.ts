@@ -28,39 +28,39 @@ export interface Themes {
 const themes: Themes = {
   dark: {
     id: 'dark',
-    primary: '#c9d1d9',
-    secondary: '#010409',
-    highlight: '#161b22',
-    background: '#0d1117',
+    primary: '#fafafa', // var(--foreground)
+    secondary: '#111111', // var(--background)
+    highlight: '#1e2e3d', // var(--secondary)
+    background: '#111111', // var(--background)
     lightOrDark: 'dark',
     highlightedLine: {
-      color: '#f0f6fc',
-      backgroundColor: '#161b22',
+      color: '#fafafa', // var(--foreground)
+      backgroundColor: '#1e2e3d', // var(--secondary)
     },
     editor: makeMonacoTheme(
       {
         base: 'vs-dark',
         colors: {
-          primary: '#c9d1d9',
-          background: '#0A0A0A',
-          comment: '#8b949e',
-          delimiter: '#d2a8ff',
-          annotation: '#a5d6ff',
-          constant: '#ff7b72',
-          number: '#f2cc60',
-          string: '#79c0ff',
-          operator: '#ff7b72',
-          keyword: '#ff7b72',
-          type: '#ffa657',
-          variable: '#ffa657',
-          logInfo: '#3fb950',
-          logError: '#f85149',
-          logWarning: '#d29922',
-          logDate: '#33B3AE',
-          logException: '#f8e3a1',
-          diffMeta: '#33B3AE',
-          diffAddition: '#3fb950',
-          diffDeletion: '#f85149',
+          primary: '#fafafa', // var(--foreground)
+          background: '#111111', // var(--background)
+          comment: '#a3a3a3', // var(--muted-foreground)
+          delimiter: '#1a8cff', // var(--primary)
+          annotation: '#a3a3a3', // var(--muted-foreground)
+          constant: '#ff5555', // var(--destructive)
+          number: '#1a8cff', // var(--primary)
+          string: '#1a8cff', // var(--primary)
+          operator: '#fafafa', // var(--foreground)
+          keyword: '#1a8cff', // var(--primary)
+          type: '#a3a3a3', // var(--muted-foreground)
+          variable: '#fafafa', // var(--foreground)
+          logInfo: '#1a8cff', // var(--primary)
+          logError: '#ff5555', // var(--destructive)
+          logWarning: '#a3a3a3', // var(--muted-foreground)
+          logDate: '#1e2e3d', // var(--secondary)
+          logException: '#ff5555', // var(--destructive)
+          diffMeta: '#1e2e3d', // var(--secondary)
+          diffAddition: '#1a8cff', // var(--primary)
+          diffDeletion: '#ff5555', // var(--destructive)
         },
       },
       {},

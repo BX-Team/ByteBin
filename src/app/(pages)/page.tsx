@@ -1,15 +1,14 @@
 'use client';
 
-import { redirect, useSearchParams } from 'next/navigation';
-import { FormEvent, SetStateAction, Suspense, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { FormEvent, Suspense, useEffect, useState } from 'react';
 import { usePasteExpiry } from '@/providers/paste-expiry-provider';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { getPaste, uploadPaste } from '@/common/api';
 import { Config } from '@/common/config';
 import { Footer } from '@/components/footer';
 import { MonacoEditor } from '@/components/monaco-editor';
 import { ThemeProvider } from '@/providers/theme-provider';
-import { Paste } from '@/types/paste';
 
 export default function PasteCreatePage() {
   return (
@@ -31,21 +30,13 @@ function Page() {
 
   useEffect(() => {
     if (duplicate && content == '') {
-      getPaste(duplicate)
-        .then(paste => {
-          const newPage = '/';
-          const newState = { page: newPage };
-          window.history.replaceState(newState, '', newPage);
-          setContent(paste.content);
-          setSelectedLanguage(paste.language.toLowerCase());
-        })
-        .catch(error => {
-          console.error('Error loading duplicate paste:', error);
-          toast({
-            title: 'Error',
-            description: 'Failed to load the paste to duplicate',
-          });
-        });
+      getPaste(duplicate).then(paste => {
+        const newPage = '/';
+        const newState = { page: newPage };
+        window.history.replaceState(newState, '', newPage);
+        setContent(paste.content);
+        setSelectedLanguage(paste.language.toLowerCase());
+      });
     }
   }, [content, duplicate]);
 
@@ -58,26 +49,17 @@ function Page() {
     event.preventDefault();
 
     if (content == null || content.length == 0) {
-      toast({
-        title: 'Error',
-        description: 'Paste cannot be empty',
-      });
+      toast.error('Paste cannot be empty');
       return;
     }
 
     const { paste, error } = await uploadPaste(content, expiry, selectedLanguage);
     if (error !== null || paste == null) {
-      toast({
-        title: 'Error',
-        description: error?.message ?? 'Failed to create your paste :(',
-      });
+      toast.error('Failed to create your paste :(');
       return;
     }
 
-    toast({
-      title: 'Success',
-      description: 'Paste created successfully, copied to clipboard!',
-    });
+    toast.success('Paste created successfully, copied to clipboard!');
     await navigator.clipboard.writeText(`${Config.siteUrl}/${paste.id}`);
     window.location.href = `/${paste.id}`;
   }

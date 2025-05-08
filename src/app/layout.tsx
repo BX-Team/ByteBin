@@ -4,7 +4,7 @@ import localFont from 'next/font/local';
 import { ReactNode } from 'react';
 import { defaultMetadata } from '@/common/metadata';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from '@/components/ui/sonner';
 import { QueryProvider } from '@/providers/query-provider';
 
 const siteFont = localFont({

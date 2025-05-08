@@ -3,7 +3,6 @@ import { lookupPaste } from '@/common/utils/paste.util';
 import { defaultMetadata } from '@/common/metadata';
 import { formatBytes } from '@/common/utils/string.util';
 import { getRelativeTime } from '@/common/utils/date.util';
-import { Footer } from '@/components/footer';
 import { PasteView } from '@/components/paste-view';
 
 type PasteProps = {

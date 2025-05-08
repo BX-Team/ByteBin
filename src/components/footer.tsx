@@ -124,7 +124,7 @@ export function Footer({ paste, editDetails, selectedLanguage, onLanguageChange 
   return (
     <div
       className={
-        'min-h-[40px] p-1.5 px-3 bg-background-secondary select-none gap-1 flex flex-col justify-between items-center text-sm w-full'
+        'min-h-[40px] p-1.5 px-3 bg-background-secondary select-none gap-1 flex flex-col justify-between items-center text-sm w-full border-t border-border/50'
       }
     >
       <div className='flex gap-2 items-center w-full justify-center md:justify-between'>
@@ -148,13 +148,13 @@ export function Footer({ paste, editDetails, selectedLanguage, onLanguageChange 
           {paste ? (
             <div className='flex gap-2'>
               <DownloadPasteButton paste={paste} />
-              <Link href={`/?duplicate=${encodeURI(paste.id)}`}>
+              <Link href={`/?duplicate=${encodeURI(paste.id)}`} prefetch={false}>
                 <Button>Duplicate</Button>
               </Link>
-              <Link href={`/raw/${paste.id}`}>
+              <Link href={`/raw/${paste.id}`} prefetch={false}>
                 <Button>Raw</Button>
               </Link>
-              <Link href='/'>
+              <Link href='/' prefetch={false}>
                 <Button>New</Button>
               </Link>
             </div>

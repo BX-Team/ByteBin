@@ -1,5 +1,4 @@
 import ky from 'ky';
-import { Config } from './config';
 import { Paste } from './supabase-db';
 
 export type Page<T> = {
