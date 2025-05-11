@@ -15,7 +15,7 @@
 
 ## Reporting Suspicious Content
 
-If you find a paste that violates our rules or contains suspicious content, please report it to us in our [Discord server](https://discord.gg/p7cxhw7E2M)
+If you find a paste that violates our rules or contains suspicious content, please report it to us in our [Discord server](https://discord.gg/qNyybSSPm5)
 
 ## Enforcement
 - Content violating rules will be removed

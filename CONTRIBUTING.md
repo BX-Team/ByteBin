@@ -2,7 +2,7 @@
 
 Thanks for your interest in contributing to ByteBin! We appreciate your help and taking your time to contribute.
 
-Before you start, please first discuss the feature/bug you want to add with the owners and comunity at our [Discord](https://discord.gg/p7cxhw7E2M) server. This will help us to understand your needs and provide you with the best possible solution.
+Before you start, please first discuss the feature/bug you want to add with the owners and comunity at our [Discord](https://discord.gg/qNyybSSPm5) server. This will help us to understand your needs and provide you with the best possible solution.
 
 We have a few guidelines to follow when contributing to this project:
 

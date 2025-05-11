@@ -57,7 +57,7 @@ The user-interface is based on the [Monaco Editor](https://microsoft.github.io/m
 
 ### ByteBin Rules
 
-Please, follow the rules described in the file [RULES.md](RULES.md) when using the site. If you find any bugs or issues, please report them in our [Discord server](https://discord.gg/p7cxhw7E2M).
+Please, follow the rules described in the file [RULES.md](RULES.md) when using the site. If you find any bugs or issues, please report them in our [Discord server](https://discord.gg/qNyybSSPm5).
 
 ### API
 
