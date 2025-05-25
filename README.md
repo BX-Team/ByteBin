@@ -52,9 +52,6 @@ The frontend is written using the Next.js framework with TypeScript, providing b
 
 The user-interface is based on the [Monaco Editor](https://microsoft.github.io/monaco-editor), the engine behind the popular Visual Studio Code text editor. It's quite simple; it supports syntax highlighting, automatic indentation, many supported languages, linking to specific lines or sections, and more!
 
-> [!TIP]
-> ByteBin is publically available at [https://bin.bxteam.org](https://bin.bxteam.org).
-
 ### ByteBin Rules
 
 Please, follow the rules described in the file [RULES.md](RULES.md) when using the site. If you find any bugs or issues, please report them in our [Discord server](https://discord.gg/qNyybSSPm5).
