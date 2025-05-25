@@ -26,14 +26,12 @@ async function handlePasteCreation(req: NextRequest) {
     const body = await req.text();
     const language = req.nextUrl.searchParams.get('language') || undefined;
 
-    // Validate the request body
     if (body == undefined || body == '') {
       return new Response('Invalid request body', {
         status: 400,
       });
     }
 
-    // Ensure the body is not too large
     const bodySize = Buffer.byteLength(body);
     if (bodySize / 1024 > Config.maxPasteSize) {
       return buildErrorResponse('Your paste exceeds the maximum size', 400);
@@ -46,23 +44,9 @@ async function handlePasteCreation(req: NextRequest) {
       }
     }
 
-    // Parse the expiry date
-    const expiresAtRaw = req.nextUrl.searchParams.get('expires');
-    const expiresAt = expiresAtRaw ? new Date(new Date().getTime() + Number(expiresAtRaw) * 1000) : undefined;
-
-    // Check if the expiry date is in the past
-    if (expiresAt && expiresAt.getTime() < new Date().getTime()) {
-      return buildErrorResponse('Expiry date is in the past', 400);
-    }
-
-    // Check if the expiry date is within the max expiry length
-    if (expiresAt && expiresAt.getTime() + Config.maxExpiryLength * 1000 < new Date().getTime()) {
-      return buildErrorResponse('Expiry date is too far in the future', 400);
-    }
-
+    const expiresAt = new Date(new Date().getTime() + Config.pasteExpiry * 24 * 60 * 60 * 1000);
     const paste = await createPaste(body, expiresAt, language);
 
-    // Verify the paste was created
     const verifyPaste = await getPaste(paste.id);
     if (!verifyPaste) {
       console.error('Failed to verify paste creation:', paste.id);

@@ -1,8 +1,7 @@
 export const Config = {
   idLength: Number(process.env.PASTE_ID_LENGTH) ?? 10,
   maxPasteSize: Number(process.env.PASTE_MAX_SIZE) ?? 1024 * 50,
-  maxExpiryLength: Number(process.env.PASTE_MAX_EXPIRY_LENGTH) ?? 60 * 60 * 24 * 365,
-  hastebinUploadEndpoint: process.env.HASTEBIN_UPLOAD_ENDPOINT ?? '/documents',
+  pasteExpiry: Number(process.env.PASTE_EXPIRY) ?? 30, // Default to 30 days
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://bin.bxteam.org',
   siteTitle: process.env.NEXT_PUBLIC_SITE_TITLE ?? 'ByteBin',
   supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,

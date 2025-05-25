@@ -2,7 +2,7 @@
 
 **ByteBin is a simple web app for writing & sharing code**. This site is very similar to other pastebin services, but we decided to make the site the way we see fit.
 
-Anyone can create a paste, and it will be available for 14 days. After that, the paste will be deleted. The public instance can be accessed using the endpoints listed below.
+Anyone can create a paste, and it will be available for 30 days. After that, the paste will be deleted. The public instance can be accessed using the endpoints listed below.
 
 ##### 1) In a Web Browser
 Just go to https://bin.bxteam.org!
